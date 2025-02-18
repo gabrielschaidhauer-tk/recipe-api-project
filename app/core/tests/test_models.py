@@ -11,6 +11,10 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from core import models
 
 
+def create_user(email="user@example.com", password="testpass123"):
+    return get_user_model().objects.create_user(email, password)
+
+
 class ModelTests(TestCase):
     """Test models."""
 
@@ -63,3 +67,11 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(recipe), recipe.title)
+
+    def test_create_ingredient(self):
+        user = create_user()
+        ingredient = models.Ingredient.objects.create(
+            user=user, name="Cucumber"
+        )
+
+        self.assertEqual(str(ingredient), ingredient.name)
